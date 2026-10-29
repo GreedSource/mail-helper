@@ -1,4 +1,4 @@
-# mail-helper
+# greedsource-mail-helper
 
 Librería reutilizable para enviar correo SMTP y renderizar plantillas Jinja2. No depende directamente de Flask ni FastAPI: ambos frameworks son opcionales y se puede usar la misma API desde cualquier aplicación Python.
 
@@ -7,13 +7,13 @@ Librería reutilizable para enviar correo SMTP y renderizar plantillas Jinja2. N
 Con acceso SSH al repositorio privado de GitHub:
 
 ```bash
-pip install "mail-helper @ git+ssh://git@github.com/GreedSource/mail-helper.git@main"
+pip install "greedsource-mail-helper @ git+ssh://git@github.com/GreedSource/mail-helper.git@main"
 ```
 
 Para Bitbucket, reemplaza `workspace` por el workspace propietario del repositorio:
 
 ```bash
-pip install "mail-helper @ git+ssh://git@bitbucket.org/workspace/mail-helper.git@main"
+pip install "greedsource-mail-helper @ git+ssh://git@bitbucket.org/workspace/mail-helper.git@main"
 ```
 
 También se puede instalar con un token HTTPS configurado mediante Git Credential Manager. Evita guardar tokens directamente en `requirements.txt` o en la URL del comando.
@@ -39,8 +39,8 @@ GitHub Actions ejecuta estas comprobaciones y las pruebas en cada push de cualqu
 Instala el extra del framework si tu aplicación necesita ese framework:
 
 ```bash
-pip install "mail-helper[flask] @ git+ssh://git@github.com/GreedSource/mail-helper.git@main"
-pip install "mail-helper[fastapi] @ git+ssh://git@github.com/GreedSource/mail-helper.git@main"
+pip install "greedsource-mail-helper[flask] @ git+ssh://git@github.com/GreedSource/mail-helper.git@main"
+pip install "greedsource-mail-helper[fastapi] @ git+ssh://git@github.com/GreedSource/mail-helper.git@main"
 ```
 
 ## Configuración

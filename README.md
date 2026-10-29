@@ -18,6 +18,24 @@ pip install "mail-helper @ git+ssh://git@bitbucket.org/workspace/mail-helper.git
 
 También se puede instalar con un token HTTPS configurado mediante Git Credential Manager. Evita guardar tokens directamente en `requirements.txt` o en la URL del comando.
 
+## Desarrollo y calidad del código
+
+Instala las herramientas de desarrollo y configura el hook local de pre-commit:
+
+```bash
+pip install -e ".[dev]"
+pre-commit install
+```
+
+En cada commit, Ruff revisa los errores comunes, los imports y las actualizaciones de sintaxis; también aplica formato. Para ejecutar las comprobaciones manualmente:
+
+```bash
+pre-commit run --all-files
+pytest
+```
+
+GitHub Actions ejecuta estas comprobaciones y las pruebas en cada push de cualquier rama y en todos los pull requests. Ruff no corrige automáticamente en el hook: si encuentra errores de lint o formato, el commit local y el workflow fallan hasta corregirlos.
+
 Instala el extra del framework si tu aplicación necesita ese framework:
 
 ```bash
@@ -82,6 +100,7 @@ mail = MailHelper().init_app()  # Lee la configuración del entorno
 templates = TemplateHelper(template_folder="templates")
 mail.init_app(app)
 templates.init_app(app)
+
 
 @app.post("/welcome")
 def send_welcome(background_tasks: BackgroundTasks):

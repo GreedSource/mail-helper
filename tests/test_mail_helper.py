@@ -34,10 +34,14 @@ def test_send_email_uses_tls_and_message_fields():
 
 
 def test_background_tasks_enqueue_send_without_connecting():
-    helper = MailHelper(MailConfig(server="smtp.example.com", default_sender="sender@example.com"))
+    helper = MailHelper(
+        MailConfig(server="smtp.example.com", default_sender="sender@example.com")
+    )
     background_tasks = MagicMock()
 
-    assert helper.send_email("Hello", ["person@example.com"], background_tasks=background_tasks)
+    assert helper.send_email(
+        "Hello", ["person@example.com"], background_tasks=background_tasks
+    )
     background_tasks.add_task.assert_called_once()
     assert background_tasks.add_task.call_args.args[0] == helper._send
 

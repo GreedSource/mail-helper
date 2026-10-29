@@ -23,9 +23,17 @@ classifiers = [
 flask = ["Flask>=2.2"]
 fastapi = ["FastAPI>=0.95"]
 test = ["pytest>=7"]
+dev = ["pre-commit>=4", "pytest>=7", "ruff>=0.17.3"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

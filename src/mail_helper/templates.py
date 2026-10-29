@@ -1,6 +1,9 @@
+from __future__ import annotations
+
+from collections.abc import Mapping
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Mapping, Optional
+from typing import Any
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -11,18 +14,18 @@ class TemplateHelper:
     def __init__(
         self,
         template_folder: str = "templates",
-        globals: Optional[Mapping[str, Any]] = None,
+        globals: Mapping[str, Any] | None = None,
     ) -> None:
-        self.env: Optional[Environment] = None
+        self.env: Environment | None = None
         self.template_folder = template_folder
         self.init_app(template_folder=template_folder, globals=globals)
 
     def init_app(
         self,
         app: Any = None,
-        template_folder: Optional[str] = None,
-        globals: Optional[Mapping[str, Any]] = None,
-    ) -> "TemplateHelper":
+        template_folder: str | None = None,
+        globals: Mapping[str, Any] | None = None,
+    ) -> TemplateHelper:
         if app is not None and hasattr(app, "jinja_env"):
             self.env = app.jinja_env
         else:
@@ -56,11 +59,13 @@ class TemplateHelper:
     def render(
         self,
         template_name: str,
-        context: Optional[Mapping[str, Any]] = None,
+        context: Mapping[str, Any] | None = None,
         **kwargs: Any,
     ) -> str:
         if self.env is None:
-            raise RuntimeError("TemplateHelper is not initialized; call init_app() first")
+            raise RuntimeError(
+                "TemplateHelper is not initialized; call init_app() first"
+            )
         values = dict(context or {})
         values.update(kwargs)
         return self.env.get_template(template_name).render(**values)

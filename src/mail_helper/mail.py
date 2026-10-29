@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import logging
 import smtplib
+from collections.abc import Mapping, Sequence
 from email.message import EmailMessage
-from typing import Any, Mapping, Optional, Sequence
+from typing import Any
 
 from .config import MailConfig
 
@@ -11,14 +14,14 @@ logger = logging.getLogger(__name__)
 class MailHelper:
     """Send email through SMTP, with no required Flask or FastAPI dependency."""
 
-    def __init__(self, config: Optional[MailConfig] = None) -> None:
+    def __init__(self, config: MailConfig | None = None) -> None:
         self.config = config
 
     def init_app(
         self,
         app: Any = None,
-        config: Optional[MailConfig] = None,
-    ) -> "MailHelper":
+        config: MailConfig | None = None,
+    ) -> MailHelper:
         if config is not None:
             self.config = config
         elif app is not None:
@@ -43,9 +46,9 @@ class MailHelper:
         self,
         subject: str,
         recipients: Sequence[str],
-        body: Optional[str] = None,
-        html: Optional[str] = None,
-        sender: Optional[str] = None,
+        body: str | None = None,
+        html: str | None = None,
+        sender: str | None = None,
         background_tasks: Any = None,
     ) -> bool:
         if self.config is None:
@@ -54,7 +57,9 @@ class MailHelper:
             raise ValueError("At least one recipient is required")
         message_sender = sender or self.config.default_sender
         if not message_sender:
-            raise ValueError("A sender is required; set MAIL_DEFAULT_SENDER or pass sender")
+            raise ValueError(
+                "A sender is required; set MAIL_DEFAULT_SENDER or pass sender"
+            )
 
         message = EmailMessage()
         message["Subject"] = subject
@@ -76,7 +81,9 @@ class MailHelper:
         config = self.config
         smtp_class = smtplib.SMTP_SSL if config.use_ssl else smtplib.SMTP
         try:
-            with smtp_class(config.server, config.port, timeout=config.timeout) as server:
+            with smtp_class(
+                config.server, config.port, timeout=config.timeout
+            ) as server:
                 if config.use_tls and not config.use_ssl:
                     server.starttls()
                 if config.username or config.password:

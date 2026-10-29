@@ -1,21 +1,23 @@
+from __future__ import annotations
+
 import os
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Mapping, Optional
 
 
 @dataclass(frozen=True)
 class MailConfig:
     server: str
     port: int = 587
-    username: Optional[str] = None
-    password: Optional[str] = None
-    default_sender: Optional[str] = None
+    username: str | None = None
+    password: str | None = None
+    default_sender: str | None = None
     use_tls: bool = True
     use_ssl: bool = False
     timeout: float = 30.0
 
     @classmethod
-    def from_env(cls, environ: Optional[Mapping[str, str]] = None) -> "MailConfig":
+    def from_env(cls, environ: Mapping[str, str] | None = None) -> MailConfig:
         values = os.environ if environ is None else environ
         server = values.get("MAIL_SERVER")
         if not server:
